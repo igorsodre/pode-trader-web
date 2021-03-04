@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
+
 import Card from '../../components/UiElements/Card';
+import { PokemonStats, UserPokemon } from '../../data/models/pokemon-terface';
+import { usePokemon } from '../../hooks/pokemon-service';
+import './Pokemon.scss';
+import MyPokemons from './MyPokemons';
 import PokeList from './PokeList';
 import PokemonSearch from './PokemonSearch';
-import './Pokemon.scss';
-import { usePokemon } from '../../hooks/pokemon-service';
-import { PokemonStats } from '../../data/models/pokemon-terface';
-import MyPokemons from './MyPokemons';
+import LoadingSpinner from '../../components/UiElements/LoadingSpinner';
+
 const Pokemons: React.FC = (props) => {
-  const { fetchPokemons, getPokemonsForLoggedUser, addPokemonToUser, removePokemonFromUser } = usePokemon();
+  const { fetchPokemons, getPokemonsForLoggedUser, addPokemonToUser, removePokemonFromUser, isLoadding } = usePokemon();
   const [pokelist, setPokeList] = useState<PokemonStats[]>([]);
-  const [usersPokemons, setUsersPokemons] = useState<PokemonStats[]>([]);
+  const [usersPokemons, setUsersPokemons] = useState<UserPokemon[]>([]);
+  const [pokeSearchResult, setPokeSearchResult] = useState<PokemonStats[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const nextPageHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -44,10 +48,10 @@ const Pokemons: React.FC = (props) => {
     }
   };
 
-  const removePokemonFromUserHandler = async (pokemonId: number) => {
+  const removePokemonFromUserHandler = async (userPokemonId: number) => {
     try {
-      await removePokemonFromUser(pokemonId);
-      setUsersPokemons((oldValues) => oldValues.filter((p) => p.id !== pokemonId));
+      await removePokemonFromUser(userPokemonId);
+      setUsersPokemons((oldValues) => oldValues.filter((p) => p.id !== userPokemonId));
     } catch (err) {
       console.log(err);
     }
@@ -77,6 +81,7 @@ const Pokemons: React.FC = (props) => {
 
   return (
     <div className="container-fluid">
+      {isLoadding && <LoadingSpinner asOverlay />}
       <div className="row">
         <div className="col">
           <Card>
@@ -86,7 +91,7 @@ const Pokemons: React.FC = (props) => {
         <div className="col">
           <Card>
             <div className="row">
-              <PokemonSearch />
+              <PokemonSearch searchResultList={pokeSearchResult} />
             </div>
             <div className="row">
               <PokeList

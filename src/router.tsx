@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import AuthorizedRoute from './components/Navigation/AuthorizedRoute';
 import NavBar from './components/Navigation/Navbar';
+import MessagesContainer from './components/UiElements/MessagesContainer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Pokemons from './pages/Pokemons';
@@ -14,6 +15,7 @@ const AppRouter: React.FC = (props) => {
     <Router>
       <div className="App">
         <NavBar />
+        <MessagesContainer />
         <Switch>
           <Route path="/" component={Startup} exact />
           <Route path="/signup" component={Signup} exact />

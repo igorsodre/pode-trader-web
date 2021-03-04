@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { RouteComponentProps } from 'react-router-dom';
 import AppInput from '../../components/FormElements/AppInput';
+import LoadingSpinner from '../../components/UiElements/LoadingSpinner';
 import MainContainer from '../../components/UiElements/MainContainer';
 import { AppContext, IAppContext } from '../../data/app-context';
 import { useAuth } from '../../hooks/auth-service';
@@ -18,7 +19,7 @@ const LoginPage: React.FC<RouteComponentProps> = (props) => {
   });
   const { isValid } = formState;
 
-  const { login } = useAuth();
+  const { login, isLoadding } = useAuth();
 
   const submithandler = async (data: FormInputs) => {
     const { email, password } = data;
@@ -29,6 +30,7 @@ const LoginPage: React.FC<RouteComponentProps> = (props) => {
       ctx.setCurrentUser(result.user);
       props.history.replace('/home');
     } catch (err) {
+      ctx.addAppMessages([{ text: err.message, type: 'ERROR' }]);
       console.log(err);
     }
   };
@@ -36,7 +38,7 @@ const LoginPage: React.FC<RouteComponentProps> = (props) => {
     <MainContainer>
       <form onSubmit={handleSubmit(submithandler)}>
         <h3>Log in</h3>
-
+        {isLoadding && <LoadingSpinner asOverlay />}
         <AppInput
           label="Email"
           register={register({

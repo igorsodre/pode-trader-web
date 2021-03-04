@@ -26,7 +26,7 @@ const NavBar: React.FC = (props) => {
   ) : (
     <React.Fragment>
       <li className="nav-item">
-        <span className="navbar-text">Logged in as: {ctx.currentUser?.name}</span>
+        <span className="navbar-text">|Logged in as: {ctx.currentUser?.name}|</span>
       </li>
       <li className="nav-item">
         <Link className="nav-link" to="/pokemons">
@@ -50,7 +50,7 @@ const NavBar: React.FC = (props) => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
         <Link className="navbar-brand" to="/home">
-          Application
+          Poke Trader
         </Link>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto">{displyedNavLinks}</ul>

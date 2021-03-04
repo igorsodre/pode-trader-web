@@ -6,3 +6,8 @@ export interface PokemonStats {
   species: string;
   id: number;
 }
+
+export interface UserPokemon {
+  id: number;
+  pokemon: PokemonStats;
+}

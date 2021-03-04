@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import AppInput from '../../components/FormElements/AppInput';
+import LoadingSpinner from '../../components/UiElements/LoadingSpinner';
 import MainContainer from '../../components/UiElements/MainContainer';
+import { AppContext, IAppContext } from '../../data/app-context';
 import { useAuth } from '../../hooks/auth-service';
 
 interface FormInputs {
@@ -18,7 +20,9 @@ const Signup: React.FC<RouteComponentProps> = (props) => {
   });
   const { isValid } = formState;
 
-  const { register: signup } = useAuth();
+  const { register: signup, isLoadding } = useAuth();
+
+  const ctx = useContext(AppContext) as IAppContext;
 
   const submithandler = async (data: FormInputs) => {
     const { name, email, password } = data;
@@ -28,6 +32,7 @@ const Signup: React.FC<RouteComponentProps> = (props) => {
       console.log(result);
       props.history.replace('/login');
     } catch (err) {
+      ctx.addAppMessages([{ text: err.message, type: 'ERROR' }]);
       console.log(err);
     }
   };
@@ -36,7 +41,7 @@ const Signup: React.FC<RouteComponentProps> = (props) => {
     <MainContainer>
       <form onSubmit={handleSubmit(submithandler)}>
         <h3>Register</h3>
-
+        {isLoadding && <LoadingSpinner />}
         <AppInput
           label="Full Name"
           register={register({

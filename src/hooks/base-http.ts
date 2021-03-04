@@ -71,6 +71,7 @@ export const useBaseHttp = (): HookReturnType => {
       const httpAbortCtrl = new AbortController();
       activeHttpRequests.current.push(httpAbortCtrl);
       try {
+        setIsloading(true);
         const result = await fetch(endpoint, {
           method: method,
           headers: { ...(await getAuthHeader()), ...headers },

@@ -1,8 +1,8 @@
 import React from 'react';
-import { PokemonStats } from '../../data/models/pokemon-terface';
+import { UserPokemon } from '../../data/models/pokemon-terface';
 
 interface MyPokemonsProps {
-  pokeList: PokemonStats[];
+  pokeList: UserPokemon[];
   onDeletePokemon: (pokemonId: number) => void;
 }
 const MyPokemons: React.FC<MyPokemonsProps> = (props) => {
@@ -22,12 +22,12 @@ const MyPokemons: React.FC<MyPokemonsProps> = (props) => {
         </thead>
         <tbody>
           {props.pokeList.map((p, index) => (
-            <tr key={p.name + index}>
-              <td>{p.name}</td>
-              <td>{p.baseExperience}</td>
-              <td>{p.species}</td>
-              <td>{p.height}</td>
-              <td>{p.weight}</td>
+            <tr key={p.pokemon.name + index}>
+              <td>{p.pokemon.name}</td>
+              <td>{p.pokemon.baseExperience}</td>
+              <td>{p.pokemon.species}</td>
+              <td>{p.pokemon.height}</td>
+              <td>{p.pokemon.weight}</td>
               <td>
                 <button className="btn btn-secondary" onClick={() => props.onDeletePokemon(p.id)}>
                   Remove
