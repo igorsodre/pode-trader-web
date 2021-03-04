@@ -1,0 +1,44 @@
+.pokemon-search-component {
+  padding: rem;
+
+  h4 {
+    margin: 2rem 0;
+    text-align: center;
+  }
+}
+
+.pokemon-list-component {
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  max-height: 65vh;
+  overflow-y: scroll;
+  h4 {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  table tr {
+    th,
+    td {
+      text-align: center;
+    }
+  }
+}
+
+.pokemon-user-pokemons-component {
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  max-height: 65vh;
+  overflow-y: scroll;
+  h4 {
+    margin: 2rem 0;
+    text-align: center;
+  }
+  table tr {
+    th,
+    td {
+      text-align: center;
+    }
+  }
+}

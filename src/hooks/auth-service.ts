@@ -1,12 +1,10 @@
-import { IUser } from './../data/models/user-interface';
-import { GET_BASE_URL } from './../data/constants';
 import { useCallback } from 'react';
+import { GET_BASE_URL } from './../data/constants';
+import { IUser } from './../data/models/user-interface';
 import { useBaseHttp } from './base-http';
+import { BaseHttpHookType } from './hooks-interfaces';
 
-type HookReturnType = {
-  errorText: Nullable<string>;
-  isLoadding: boolean;
-  clearError: () => void;
+interface AuthHttpService extends BaseHttpHookType {
   refreshToken: () => Promise<{ accessToken: string; user: IUser }>;
   register: (name: string, email: string, password: string) => Promise<string>;
   updateUser: (name: string, email: string, password: string, newpassword: string) => Promise<IUser>;
@@ -19,8 +17,8 @@ type HookReturnType = {
   }>;
   logout: () => Promise<string>;
   getLoggedUser: () => Promise<IUser>;
-};
-export const useAuth = (): HookReturnType => {
+}
+export const useAuth = (): AuthHttpService => {
   const { errorText, isLoadding, clearError, postRequest, getRequest } = useBaseHttp();
 
   const register = useCallback(

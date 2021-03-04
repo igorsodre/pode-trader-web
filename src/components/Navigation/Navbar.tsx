@@ -26,9 +26,12 @@ const NavBar: React.FC = (props) => {
   ) : (
     <React.Fragment>
       <li className="nav-item">
-        <a className="nav-link disabled" href="/">
-          Logged in as: {ctx.currentUser?.name}
-        </a>
+        <span className="navbar-text">Logged in as: {ctx.currentUser?.name}</span>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" to="/pokemons">
+          Meus Pokemons
+        </Link>
       </li>
       <li className="nav-item">
         <Link className="nav-link" to="/profile">
@@ -44,7 +47,7 @@ const NavBar: React.FC = (props) => {
   );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
         <Link className="navbar-brand" to="/home">
           Application

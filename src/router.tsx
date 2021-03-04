@@ -4,6 +4,7 @@ import AuthorizedRoute from './components/Navigation/AuthorizedRoute';
 import NavBar from './components/Navigation/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Pokemons from './pages/Pokemons';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Startup from './pages/Startup';
@@ -19,6 +20,7 @@ const AppRouter: React.FC = (props) => {
           <Route path="/login" component={Login} exact />
           <AuthorizedRoute path="/home" component={Home} exact />
           <AuthorizedRoute path="/profile" component={Profile} exact />
+          <AuthorizedRoute path="/pokemons" component={Pokemons} exact />
           <Redirect to="/" />
         </Switch>
       </div>
