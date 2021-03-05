@@ -3,6 +3,7 @@ import { PokemonStats } from '../../data/models/pokemon-terface';
 
 interface PokemonSearchProps {
   searchResultList: PokemonStats[];
+  onSearchPokemon: (name: string) => void;
 }
 const PokemonSearch: React.FC<PokemonSearchProps> = (props) => {
   const content = props.searchResultList.length ? (
@@ -22,7 +23,7 @@ const PokemonSearch: React.FC<PokemonSearchProps> = (props) => {
           </label>
           <input type="text" className="form-control" id="inputPassword2" placeholder="pokemon name" />
         </div>
-        <button type="submit" className="btn btn-primary mb-2">
+        <button type="submit" className="btn btn-primary mb-2" onClick={() => props.onSearchPokemon('')}>
           Search
         </button>
       </form>

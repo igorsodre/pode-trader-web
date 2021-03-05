@@ -5,10 +5,12 @@ import NavBar from './components/Navigation/Navbar';
 import MessagesContainer from './components/UiElements/MessagesContainer';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import NewTrade from './pages/NewTrade';
 import Pokemons from './pages/Pokemons';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 import Startup from './pages/Startup';
+import Trade from './pages/Trade';
 
 const AppRouter: React.FC = (props) => {
   return (
@@ -23,6 +25,8 @@ const AppRouter: React.FC = (props) => {
           <AuthorizedRoute path="/home" component={Home} exact />
           <AuthorizedRoute path="/profile" component={Profile} exact />
           <AuthorizedRoute path="/pokemons" component={Pokemons} exact />
+          <AuthorizedRoute path="/trade" component={Trade} exact />
+          <AuthorizedRoute path="/new-trade" component={NewTrade} exact />
           <Redirect to="/" />
         </Switch>
       </div>

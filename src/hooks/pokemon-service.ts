@@ -7,8 +7,10 @@ import { BaseHttpHookType } from './hooks-interfaces';
 interface PokemonHttpService extends BaseHttpHookType {
   fetchPokemons: (page: number) => Promise<PokemonStats[]>;
   getPokemonsForLoggedUser: () => Promise<UserPokemon[]>;
+  getPokemonsForGivenUser: (userId: number) => Promise<UserPokemon[]>;
   addPokemonToUser: (pokemonId: number) => Promise<UserPokemon>;
   removePokemonFromUser: (userPokemonId: number) => Promise<string>;
+  addTradeRequest: (requestedUserId: number, requestedPokemons: number[], givenPokemons: number[]) => Promise<string>;
 }
 export const usePokemon = (): PokemonHttpService => {
   const { errorText, getRequest, postRequest, isLoadding, clearError } = useBaseHttp();
@@ -24,6 +26,14 @@ export const usePokemon = (): PokemonHttpService => {
     const endpoint = GET_BASE_URL() + '/api/pokemons/my_pokemons';
     return getRequest<{ data: UserPokemon[] }>(endpoint).then((res) => res.data);
   }, [getRequest]);
+
+  const getPokemonsForGivenUser = useCallback(
+    async (userId: number) => {
+      const endpoint = GET_BASE_URL() + '/api/pokemons/user/' + userId;
+      return getRequest<{ data: UserPokemon[] }>(endpoint).then((res) => res.data);
+    },
+    [getRequest],
+  );
 
   const addPokemonToUser = useCallback(
     async (pokemonId: number) => {
@@ -43,6 +53,15 @@ export const usePokemon = (): PokemonHttpService => {
     [postRequest],
   );
 
+  const addTradeRequest = useCallback(
+    async (requestedUserId: number, requestedPokemons: number[], givenPokemons: number[]) => {
+      const endpoint = GET_BASE_URL() + '/api/pokemons/trade';
+      const body = { requestedUserId, requestedPokemons, givenPokemons };
+      return postRequest<{ data: string }>(endpoint, body).then((res) => res.data);
+    },
+    [postRequest],
+  );
+
   return {
     errorText,
     isLoadding,
@@ -51,5 +70,7 @@ export const usePokemon = (): PokemonHttpService => {
     getPokemonsForLoggedUser,
     addPokemonToUser,
     removePokemonFromUser,
+    getPokemonsForGivenUser,
+    addTradeRequest,
   };
 };

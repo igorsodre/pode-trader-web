@@ -29,6 +29,10 @@ const Pokemons: React.FC = (props) => {
     fetchAndSetPokemonsForPage(page);
   };
 
+  const searchPokemonHandler = () => {
+    setPokeSearchResult([]);
+  };
+
   const fetchAndSetPokemonsForPage = async (page: number) => {
     try {
       const result = await fetchPokemons(page);
@@ -88,11 +92,13 @@ const Pokemons: React.FC = (props) => {
             <MyPokemons onDeletePokemon={removePokemonFromUserHandler} pokeList={usersPokemons} />
           </Card>
         </div>
+
         <div className="col">
           <Card>
             <div className="row">
-              <PokemonSearch searchResultList={pokeSearchResult} />
+              <PokemonSearch onSearchPokemon={searchPokemonHandler} searchResultList={pokeSearchResult} />
             </div>
+            <hr className="mt-5 mb-5"></hr>
             <div className="row">
               <PokeList
                 onAddPokeItem={addPokemonToUserHandler}

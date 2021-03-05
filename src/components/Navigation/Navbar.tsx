@@ -30,7 +30,12 @@ const NavBar: React.FC = (props) => {
       </li>
       <li className="nav-item">
         <Link className="nav-link" to="/pokemons">
-          Meus Pokemons
+          My Pokemons
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" to="/trade">
+          My Trades
         </Link>
       </li>
       <li className="nav-item">

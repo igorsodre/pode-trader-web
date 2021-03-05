@@ -17,6 +17,7 @@ interface AuthHttpService extends BaseHttpHookType {
   }>;
   logout: () => Promise<string>;
   getLoggedUser: () => Promise<IUser>;
+  getAllUsers: () => Promise<IUser[]>;
 }
 export const useAuth = (): AuthHttpService => {
   const { errorText, isLoadding, clearError, postRequest, getRequest } = useBaseHttp();
@@ -72,9 +73,15 @@ export const useAuth = (): AuthHttpService => {
   }, [postRequest]);
 
   const getLoggedUser = useCallback(async () => {
-    const endpoint = GET_BASE_URL() + '/api/users';
+    const endpoint = GET_BASE_URL() + '/api/users/detail';
 
     return getRequest<{ data: IUser }>(endpoint).then((res) => res.data);
+  }, [getRequest]);
+
+  const getAllUsers = useCallback(async () => {
+    const endpoint = GET_BASE_URL() + '/api/users/';
+
+    return getRequest<{ data: IUser[] }>(endpoint).then((res) => res.data);
   }, [getRequest]);
 
   return {
@@ -87,5 +94,6 @@ export const useAuth = (): AuthHttpService => {
     getLoggedUser,
     refreshToken,
     logout,
+    getAllUsers,
   };
 };
