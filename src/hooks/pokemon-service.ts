@@ -10,7 +10,6 @@ interface PokemonHttpService extends BaseHttpHookType {
   getPokemonsForGivenUser: (userId: number) => Promise<UserPokemon[]>;
   addPokemonToUser: (pokemonId: number) => Promise<UserPokemon>;
   removePokemonFromUser: (userPokemonId: number) => Promise<string>;
-  addTradeRequest: (requestedUserId: number, requestedPokemons: number[], givenPokemons: number[]) => Promise<string>;
 }
 export const usePokemon = (): PokemonHttpService => {
   const { errorText, getRequest, postRequest, isLoadding, clearError } = useBaseHttp();
@@ -53,15 +52,6 @@ export const usePokemon = (): PokemonHttpService => {
     [postRequest],
   );
 
-  const addTradeRequest = useCallback(
-    async (requestedUserId: number, requestedPokemons: number[], givenPokemons: number[]) => {
-      const endpoint = GET_BASE_URL() + '/api/pokemons/trade';
-      const body = { requestedUserId, requestedPokemons, givenPokemons };
-      return postRequest<{ data: string }>(endpoint, body).then((res) => res.data);
-    },
-    [postRequest],
-  );
-
   return {
     errorText,
     isLoadding,
@@ -71,6 +61,5 @@ export const usePokemon = (): PokemonHttpService => {
     addPokemonToUser,
     removePokemonFromUser,
     getPokemonsForGivenUser,
-    addTradeRequest,
   };
 };

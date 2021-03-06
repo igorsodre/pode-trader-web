@@ -25,7 +25,7 @@ const AppRouter: React.FC = (props) => {
           <AuthorizedRoute path="/home" component={Home} exact />
           <AuthorizedRoute path="/profile" component={Profile} exact />
           <AuthorizedRoute path="/pokemons" component={Pokemons} exact />
-          <AuthorizedRoute path="/trade" component={Trade} exact />
+          <AuthorizedRoute path="/trades" component={Trade} exact />
           <AuthorizedRoute path="/new-trade" component={NewTrade} exact />
           <Redirect to="/" />
         </Switch>

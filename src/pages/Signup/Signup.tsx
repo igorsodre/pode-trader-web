@@ -27,9 +27,9 @@ const Signup: React.FC<RouteComponentProps> = (props) => {
   const submithandler = async (data: FormInputs) => {
     const { name, email, password } = data;
     try {
-      const result = await signup(name, email, password);
+      await signup(name, email, password);
       reset();
-      console.log(result);
+      ctx.addAppMessages([{ type: 'SUCCESS', text: 'User created successfully' }]);
       props.history.replace('/login');
     } catch (err) {
       ctx.addAppMessages([{ text: err.message, type: 'ERROR' }]);

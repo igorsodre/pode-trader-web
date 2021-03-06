@@ -34,7 +34,7 @@ const NavBar: React.FC = (props) => {
         </Link>
       </li>
       <li className="nav-item">
-        <Link className="nav-link" to="/trade">
+        <Link className="nav-link" to="/trades">
           My Trades
         </Link>
       </li>

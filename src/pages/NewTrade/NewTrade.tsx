@@ -3,18 +3,19 @@ import { RouteComponentProps } from 'react-router-dom';
 import Select from 'react-select';
 import LoadingSpinner from '../../components/UiElements/LoadingSpinner';
 import { AppContext, IAppContext } from '../../data/app-context';
+import { FAIR_TRADE_PERCENTAGE } from '../../data/constants';
 import { UserPokemon } from '../../data/models/pokemon-terface';
 import { IUser } from '../../data/models/user-interface';
 import { useAuth } from '../../hooks/auth-service';
 import { usePokemon } from '../../hooks/pokemon-service';
+import { useTrade } from '../../hooks/trade-service';
+import { calculateTotalBaseXP } from '../../util/pokemon-util';
 import './NewTrade.scss';
 
 type SelectInput = {
   value: number;
   label: string;
 } | null;
-
-const FAIR_TRADE_PERCENTAGE = 85;
 
 const usersToSelectOptions = (users: IUser[]) => {
   return users.map((u) => ({ value: u.id, label: u.name }));
@@ -42,12 +43,8 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
   const [fairnessTert, setFairnessText] = useState('');
 
   const { getAllUsers, isLoadding: isAuthLoading } = useAuth();
-  const {
-    getPokemonsForGivenUser,
-    getPokemonsForLoggedUser,
-    addTradeRequest,
-    isLoadding: isPokemonLoadig,
-  } = usePokemon();
+  const { getPokemonsForGivenUser, getPokemonsForLoggedUser, isLoadding: isPokemonLoadig } = usePokemon();
+  const { addTradeRequest, isLoadding: isTradeLoading } = useTrade();
   const { addAppMessages, currentUser } = useContext(AppContext) as IAppContext;
 
   useEffect(() => {
@@ -112,17 +109,8 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
   };
 
   useEffect(() => {
-    let sum = 0;
-    let sum2 = 0;
-    loggedUserChosenPokemons.forEach((p) => {
-      sum += p.pokemon.baseExperience;
-    });
-
-    chonsenUsersPokemons.forEach((p) => {
-      sum2 += p.pokemon.baseExperience;
-    });
-    setLoggedUserBaseExperinece(sum);
-    setSelectedUserBaseExperinece(sum2);
+    setLoggedUserBaseExperinece(calculateTotalBaseXP(loggedUserChosenPokemons));
+    setSelectedUserBaseExperinece(calculateTotalBaseXP(chonsenUsersPokemons));
   }, [loggedUserChosenPokemons, chonsenUsersPokemons]);
 
   useEffect(() => {
@@ -156,7 +144,7 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
     try {
       await addTradeRequest(selectedUser.id, requestedPokemons, givenPokemons);
       addAppMessages([{ type: 'SUCCESS', text: 'Trade request added succesfully' }]);
-      props.history.replace('/trade');
+      props.history.replace('/trades');
     } catch (err) {
       console.log(err);
       addAppMessages([{ type: 'ERROR', text: err.message }]);
@@ -165,7 +153,7 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
   };
   return (
     <div className="container-fluid">
-      {(isAuthLoading || isPokemonLoadig) && <LoadingSpinner asOverlay />}
+      {(isAuthLoading || isPokemonLoadig || isTradeLoading) && <LoadingSpinner asOverlay />}
       <div className="row">
         <div className="col-2" />
         <div className="col-8">
@@ -181,6 +169,7 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
           <Select
             isMulti
             options={pokemonToSelctOptions(loggedUserPokemons)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChange={(val: any) => onLoggedUserSelectPokemonsHandler(val)}
           />
           <p>Total base Experience: {loggedUserBaseExperience}</p>
@@ -191,6 +180,7 @@ const NewTrade: React.FC<RouteComponentProps> = (props) => {
             value={inputValueSource}
             isMulti
             options={pokemonToSelctOptions(selectedUserPokemons)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChange={(val: any) => onUserSelectPokemons(val)}
           />
 
