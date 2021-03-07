@@ -5,6 +5,9 @@ import { AppContext, IAppContext } from '../../data/app-context';
 const NavBar: React.FC = (props) => {
   const ctx = useContext(AppContext) as IAppContext;
 
+  const { token } = useContext(AppContext) as IAppContext;
+  const homePath = !token ? '/' : '/home';
+
   const logoutHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     ctx.logout();
@@ -25,9 +28,6 @@ const NavBar: React.FC = (props) => {
     </React.Fragment>
   ) : (
     <React.Fragment>
-      <li className="nav-item">
-        <span className="navbar-text">|Logged in as: {ctx.currentUser?.name}|</span>
-      </li>
       <li className="nav-item">
         <Link className="nav-link" to="/pokemons">
           My Pokemons
@@ -52,16 +52,18 @@ const NavBar: React.FC = (props) => {
   );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div className="container">
-        <Link className="navbar-brand" to="/home">
-          Poke Trader
-        </Link>
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul className="navbar-nav ml-auto">{displyedNavLinks}</ul>
+    <React.Fragment>
+      <nav className="navbar navbar-expand-lg navbar-light fixed-top py-3 bg-dark" id="mainNav">
+        <div className="container">
+          <Link to={homePath} className="navbar-brand js-scroll-trigger">
+            Poke Trader
+          </Link>
+          <div className="collapse navbar-collapse" id="navbarResponsive">
+            <ul className="navbar-nav ml-auto my-2 my-lg-0">{displyedNavLinks}</ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </React.Fragment>
   );
 };
 
