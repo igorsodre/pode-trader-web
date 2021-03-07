@@ -10,7 +10,14 @@ import PokemonSearch from './PokemonSearch';
 import LoadingSpinner from '../../components/UiElements/LoadingSpinner';
 
 const Pokemons: React.FC = (props) => {
-  const { fetchPokemons, getPokemonsForLoggedUser, addPokemonToUser, removePokemonFromUser, isLoadding } = usePokemon();
+  const {
+    fetchPokemons,
+    getPokemonsForLoggedUser,
+    serachPokemons,
+    addPokemonToUser,
+    removePokemonFromUser,
+    isLoadding,
+  } = usePokemon();
   const [pokelist, setPokeList] = useState<PokemonStats[]>([]);
   const [usersPokemons, setUsersPokemons] = useState<UserPokemon[]>([]);
   const [pokeSearchResult, setPokeSearchResult] = useState<PokemonStats[]>([]);
@@ -29,8 +36,15 @@ const Pokemons: React.FC = (props) => {
     fetchAndSetPokemonsForPage(page);
   };
 
-  const searchPokemonHandler = () => {
-    setPokeSearchResult([]);
+  const searchPokemonHandler = async (pokeName: string) => {
+    console.log(pokeName);
+    if (!pokeName) return;
+    try {
+      const result = await serachPokemons(pokeName);
+      setPokeSearchResult(result);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const fetchAndSetPokemonsForPage = async (page: number) => {
@@ -96,7 +110,11 @@ const Pokemons: React.FC = (props) => {
         <div className="col">
           <Card>
             <div className="row">
-              <PokemonSearch onSearchPokemon={searchPokemonHandler} searchResultList={pokeSearchResult} />
+              <PokemonSearch
+                onAddPokeItem={addPokemonToUserHandler}
+                onSearchPokemon={searchPokemonHandler}
+                searchResultList={pokeSearchResult}
+              />
             </div>
             <hr className="mt-5 mb-5"></hr>
             <div className="row">

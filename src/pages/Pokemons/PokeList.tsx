@@ -36,7 +36,7 @@ const PokeList: React.FC<PokeListProps> = (props) => {
           ))}
         </tbody>
       </table>
-      <nav aria-label="Page navigation example">
+      <nav aria-label="Pagination links">
         <ul className="pagination">
           <li className="page-item">
             <a className="page-link" href="/" aria-label="Previous" onClick={props.onPreviousListPage}>
